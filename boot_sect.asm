@@ -22,6 +22,7 @@ KERNEL_OFFSET equ 0x1000
 %include "switch_to_pm.asm"
 
 [bits 16]
+
 load_kernel:
 	mov bx, MSG_LOAD_KERNEL
 	call print_string
