@@ -9,6 +9,11 @@ static void gdt_set_gate(s32int, u32int, u32int, u8int, u8int);
 static void init_idt();
 static void idt_set_gate(u8int, u32int, u16int, u8int);
 
+static int MASTER_IRQ_COMMAND = 0x20;
+static int MASTER_IRQ_DATA = 0x21;
+static int SLAVE_IRQ_COMMAND = 0xA0;
+static int SLAVE_IRQ_DATA = 0xA1;
+
 gdt_entry_t gdt_entries[5];	// cs/ds for kernel, cs/ds for user, null
 gdt_ptr_t   gdt_ptr;
 idt_entry_t idt_entries[256];
@@ -87,6 +92,35 @@ static void init_idt()
 	idt_set_gate(29, (u32int) isr29, 0x08, 0x8E);
 	idt_set_gate(30, (u32int) isr30, 0x08, 0x8E);
 	idt_set_gate(31, (u32int) isr31, 0x08, 0x8E);
+
+	// remap IRQ table
+	outb(MASTER_IRQ_COMMAND, 0x11);		// initialize master IRQ
+	outb(SLAVE_IRQ_COMMAND, 0x11);		// initialize slave IRQ
+	outb(MASTER_IRQ_DATA, 0x20);		// vector offset
+	outb(SLAVE_IRQ_DATA, 0x28);		// vector offset
+	outb(MASTER_IRQ_DATA, 0x04);		// tell there's slave IRQ at 0x0100
+	outb(SLAVE_IRQ_DATA, 0x02);		// tell it's cascade identity
+	outb(MASTER_IRQ_DATA, 0x01);		// 8086 mode
+	outb(SLAVE_IRQ_DATA, 0x01);		// 8086 mode
+	outb(MASTER_IRQ_DATA, 0x0);
+	outb(SLAVE_IRQ_DATA, 0x0);
+
+	idt_set_gate(32, (u32int) irq0, 0x08, 0x8E);
+	idt_set_gate(33, (u32int) irq1, 0x08, 0x8E);
+	idt_set_gate(34, (u32int) irq2, 0x08, 0x8E);
+	idt_set_gate(35, (u32int) irq3, 0x08, 0x8E);
+	idt_set_gate(36, (u32int) irq4, 0x08, 0x8E);
+	idt_set_gate(37, (u32int) irq5, 0x08, 0x8E);
+	idt_set_gate(38, (u32int) irq6, 0x08, 0x8E);
+	idt_set_gate(39, (u32int) irq7, 0x08, 0x8E);
+	idt_set_gate(40, (u32int) irq8, 0x08, 0x8E);
+	idt_set_gate(41, (u32int) irq9, 0x08, 0x8E);
+	idt_set_gate(42, (u32int) irq10, 0x08, 0x8E);
+	idt_set_gate(43, (u32int) irq11, 0x08, 0x8E);
+	idt_set_gate(44, (u32int) irq12, 0x08, 0x8E);
+	idt_set_gate(45, (u32int) irq13, 0x08, 0x8E);
+	idt_set_gate(46, (u32int) irq14, 0x08, 0x8E);
+	idt_set_gate(47, (u32int) irq15, 0x08, 0x8E);
 
 	idt_flush((u32int) &idt_ptr);
 }
