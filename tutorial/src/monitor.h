@@ -12,6 +12,8 @@ void monitor_clear();
 // Output null-terminated ASCII string.
 void monitor_write(char* c);
 
+void monitor_write_dec(u32int n);
+
 void advance_cursor();
 
 #endif // MONITOR_H_

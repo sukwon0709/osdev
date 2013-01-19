@@ -114,6 +114,23 @@ void monitor_write(char* c)
 	}
 }
 
+void monitor_write_dec(u32int n)
+{
+	u32int r = 0;
+	int i;
+
+	while (n) {
+		r *= 10;
+		r += n % 10;
+		n /= 10;
+	}
+
+	while (r) {
+		monitor_put('0' + r % 10);
+		r /= 10;
+	}
+}
+
 void advance_cursor()
 {
 	cursor_x++;

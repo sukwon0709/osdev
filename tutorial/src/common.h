@@ -12,4 +12,9 @@ void outb(u16int port, u8int value);
 u8int inb(u16int port);
 u16int inw(u16int port);
 
+void* memset(void* ptr, int ch, u32int len);
+void* memcpy(void* dst, const void* src, u32int len);
+int strcmp(const char* a, const char* b);
+u32int strlen(const char* s);
+
 #endif // COMMON_H_
