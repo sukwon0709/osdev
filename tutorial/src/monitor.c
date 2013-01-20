@@ -114,6 +114,19 @@ void monitor_write(char* c)
 	}
 }
 
+void monitor_write_hex(u32int n)
+{
+	int i;
+	for (i = 28; i >= 0; i -= 4) {
+		int digit = (n >> i) & 0xF;
+		if (digit < 10) {
+			monitor_put('0' + digit);
+		} else {
+			monitor_put('a' + digit - 10);
+		}
+	}
+}
+
 void monitor_write_dec(u32int n)
 {
 	u32int r = 0;

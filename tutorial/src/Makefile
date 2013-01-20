@@ -1,4 +1,4 @@
-SOURCES=boot.o main.o common.o monitor.o isr.o descriptor_tables.o interrupt.o gdt_flush.o idt_flush.o timer.o
+SOURCES=boot.o main.o common.o monitor.o isr.o descriptor_tables.o interrupt.o gdt_flush.o idt_flush.o timer.o kheaps.o paging.o
 
 CFLAGS=-nostdlib -nostdinc -fno-builtin -fno-stack-protector
 LDFLAGS=-Tlink.ld
